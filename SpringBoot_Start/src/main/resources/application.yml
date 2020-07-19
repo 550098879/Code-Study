@@ -4,7 +4,7 @@ spring:
 #java -jar project-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev;
 ---
 server:
-  port: 8080
+  port: 7777
 spring:
   profiles: dev
 #  datasource:
