@@ -1,5 +1,6 @@
 package org.zyx.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -16,6 +17,11 @@ public class HelloController {
 
     @Autowired
     private DataSource dataSource;
+
+    /**
+     * ObjectMapper工具类:序列化和反序列化
+     */
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @GetMapping("/show")
     public String hello(){

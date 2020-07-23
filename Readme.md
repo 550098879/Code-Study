@@ -37,8 +37,16 @@
     - Spring注入Druid配置类:无法创建bean的异常
         - 原因：是缺少jdbc相关的jar包， 
         - 解决办法：引入spring-jdbc 包
- 
- 
+    - 通用Mapper
+        - 主键id全部为0
+            - 解决：自增主键类型int型改为Integer
+        - 创建实体Bean失败,GenerationType.AUTO 错误
+            - 解决: 主键生成策略: @GeneratedValue(strategy = GenerationType.IDENTITY)
+    - 模块中创建模块,出现无法读取模块代码的问题
+        - 解决:idea右上角->项目结构->Module->选中该模块->添加Source(参照其他模块,指定目录)
+    
+    
+    
 - 配置相关
     - 默认配置文件:spring boot项目中同时存在application.properties和application.yml文件时，
                   两个文件都有效，但是application.properties的优先级会比application.yml高。
@@ -84,7 +92,30 @@
     - 自定义拦截器,实现HandlerInterceptor接口
     - 配置拦截器:自定义一个java配置类(@Configuration),实现WebMvcConfigurer接口
 - 整合事务:添加@Transactional 注解(在service层或controller层)
- 
+- 序列化/反序列化工具: jackson 工具包
+    - private static final ObjectMapper MAPPER = new ObjectMapper();
+    - MAPPER.readValue();反序列化
+    - MAPPER.writeValueAsString(Object obj) 对象序列化为字符串
+- RestTemplate 远程调用技术(后端发送请求)
+    - Spring提供了一个RestTemplate模板工具类，对基于Http的客户端进行了封装，并且实现了对象与json的序列化和反序列化，非常方便。RestTemplate并没有限定Http的客户端类型，而是进行了抽象，目前常用的3种都有支持：
+      - HttpClient
+      - OkHttp
+      - JDK原生的URLConnection（默认的）
+    - 注意:需要在项目中注册一个RestTemplate对象，可以在启动类位置注册
+    ```java
+    @SpringBootApplication
+    public class HttpDemoApplication {
+    	public static void main(String[] args) {
+    		SpringApplication.run(HttpDemoApplication.class, args);
+    	}
+    	@Bean
+    	public RestTemplate restTemplate() {
+            // 默认的RestTemplate，底层是走JDK的URLConnection方式。
+    		return new RestTemplate();
+    	}
+    }
+    ```
+
  
 - 什么是SpringBoot?
     - 构建spring应用的脚手架,内置Tomcat,打包成jar,自动配置(根据引入的依赖,简化配置)
@@ -94,3 +125,10 @@
         - 覆盖默认配置
         - 添加引导类,@SpringBootApplication(组合注解)
         
+        
+        
+### SpringCloud 补充学习
+
+
+- 技巧
+    - idea开启service,配置Application,自动扫描所有启动类,统一管理启动器
