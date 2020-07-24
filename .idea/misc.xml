@@ -13,6 +13,7 @@
         <option value="$PROJECT_DIR$/SpringCloud-Start/service-provider/pom.xml" />
         <option value="$PROJECT_DIR$/SpringCloud-Start/service-contomer/pom.xml" />
         <option value="$PROJECT_DIR$/SpringCloud-Start/service-customer/pom.xml" />
+        <option value="$PROJECT_DIR$/SpringCloud-Start/service-eureka/pom.xml" />
       </list>
     </option>
   </component>

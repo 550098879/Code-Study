@@ -129,6 +129,54 @@
         
 ### SpringCloud 补充学习
 
+- 架构演变:传统架构->水平拆分->垂直拆分(最早的分布式架构)->SOA(dubbo,面向服务)->微服务(SpringCloud)
+- 远程调用技术:rpc http         (基于TCP协议)
+    - rpc协议:需要自定义数据格式(团队约定),限定技术,传输速度快,效率快 (基于传输层) dubbo
+    - http协议:统一的数据格式,比限定技术,rest接口,效率不如rpc  (基于表示层) SpringCloud
+- 什么是SpringCloud?
+    - 微服务架构的解决方案,是很多组件的集合
+        - Eureka:注册中心.服务的注册与发现
+        - Zuul:网关组件,路由请求,过滤器(ribbon,hystrix)
+        - Ribbon: 负载均衡组件
+        - Hystrix:熔断组件
+        - Feign: 远程调用组件(ribbon hystrix)
+- Eureka:高可用,修改端口实现注册中心转移
+    - 注册中心:
+        - 添加Eureka-server依赖(引入启动器)
+        - 配置spring.application.name=注册中心名
+        - 在引导类上添加@EnableEurekaServer成为注册中心
+    - 客户端:
+        - 添加Eureka-Client依赖(引入启动器)
+        - 配置spring.application.name=注册中心名
+        - 配置Eureka.client.service-url.defaultZone="http://localhost:8761/eureka(注册中心地址)"  (访问不加eureka)
+        - 引导类添加@EnableDiscoveryClient 启用Eureka客户端
 
+
+
+- 玩法
+    - 引入组件的启动器
+    - 覆盖默认配置
+    - 在引导类上添加注解,开启相关组件
+    - 存储在双重Map中
+        - Map<serviceId,Map<服务实例名,实例对象(instance)>>
 - 技巧
     - idea开启service,配置Application,自动扫描所有启动类,统一管理启动器
+
+- 注解 :
+    - @EnableDiscoveryClient //启用Eureka客户端(SpringCloud提供,推荐使用)    ---@EnableEurekaClient(netflix提供) 都可以启动
+
+- 异常
+    - 父模块配置了数据库源,导致子模块启动要求配置数据源
+        - 解决: 
+            - 配置相应参数,配置数据源即可
+            - 启动类排除掉DataSourceAutoConfiguration(数据源自动配置)
+        ```
+                 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+                              @ComponentScan(basePackages = {"com.jy"})
+                              public class CosApplication {
+                                  public static void main(String[] args) {
+                                      SpringApplication.run(CosApplication.class);
+                                  }
+                              }
+                             
+         ```

@@ -2,16 +2,28 @@ server:
   port: 8081
 
 spring:
+  application:  #   配置服务注册信息
+    name: service-provider   #将来最为服务提供方的服务名
   datasource:
     url: jdbc:mysql://localhost:3306/mybatis?serverTimezone=UTC
     username: root
     password: 550098879
+
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 #mybatis配置,扫描包
 mybatis:
   type-aliases-package: org.zyx.entity
 
-#  thymeleaf模板
-  thymeleaf:
-    prefix: classpath:/templates/
-    suffix: .html
+eureka:
+  client:
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+      instance:
+        lease-expiration-duration-in-seconds: 15     #服务失效时间
+        lease-renewal-interval-in-seconds: 5         #服务续约(renew)时间,心跳时间
+        #服务提供方启动时,会检测参数是否为true,是则注册给eureka,否则不注册,默认为true
+  #    fetch-registry: true        #拉取Eureka Server服务的列表备份,然后缓存在本地(默认true)
+  #    registry-fetch-interval-seconds: 5           #间隔多久读取并更新数据
+
+

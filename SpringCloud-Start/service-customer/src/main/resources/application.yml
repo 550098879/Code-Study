@@ -1,7 +1,14 @@
+#服务消费者
 server:
-  port: 8080
+  port: 8082
 spring:
-  thymeleaf:
-    suffix: .html
-    prefix: classpath:/thymeleaf/
+  application:
+    name: service-customer
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true                  #拉取Eureka Server服务的列表备份,然后缓存在本地(默认true)
+    registry-fetch-interval-seconds: 5    #间隔多久读取并更新数据
+
 

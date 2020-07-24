@@ -10,11 +10,13 @@
         <module name="service-customer" />
         <module name="SpringCloud-Start" />
         <module name="SpringBoot_Start" />
+        <module name="service-eureka" />
         <module name="service-provider" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="service-customer" target="1.8" />
+      <module name="service-eureka" target="1.8" />
       <module name="service-provider" target="1.8" />
       <module name="SpringBoot_Start" target="1.8" />
       <module name="SpringCloud-Start" target="1.5" />
@@ -25,6 +27,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="SpringBoot_Start" options="-parameters" />
       <module name="service-customer" options="-parameters" />
+      <module name="service-eureka" options="-parameters" />
       <module name="service-provider" options="-parameters" />
     </option>
   </component>
