@@ -92,7 +92,7 @@
     - 自定义拦截器,实现HandlerInterceptor接口
     - 配置拦截器:自定义一个java配置类(@Configuration),实现WebMvcConfigurer接口
 - 整合事务:添加@Transactional 注解(在service层或controller层)
-- 序列化/反序列化工具: jackson 工具包
+- 序列化/反序列化工具: jackson 工具包(SpringBoot默认消息转换器)
     - private static final ObjectMapper MAPPER = new ObjectMapper();
     - MAPPER.readValue();反序列化
     - MAPPER.writeValueAsString(Object obj) 对象序列化为字符串
@@ -115,7 +115,8 @@
     	}
     }
     ```
-
+- java8新特性?
+    - 次数.fori 快速创建for循环
  
 - 什么是SpringBoot?
     - 构建spring应用的脚手架,内置Tomcat,打包成jar,自动配置(根据引入的依赖,简化配置)

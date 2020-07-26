@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8082
 
 spring:
   application:  #   配置服务注册信息
@@ -8,7 +8,6 @@ spring:
     url: jdbc:mysql://localhost:3306/mybatis?serverTimezone=UTC
     username: root
     password: 550098879
-
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 #mybatis配置,扫描包
 mybatis:

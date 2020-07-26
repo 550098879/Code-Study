@@ -1,6 +1,6 @@
 #服务消费者
 server:
-  port: 8082
+  port: 8091
 spring:
   application:
     name: service-customer
