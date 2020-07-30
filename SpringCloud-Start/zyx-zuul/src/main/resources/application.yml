@@ -1,0 +1,23 @@
+server:
+  port: 10010
+spring:
+  application:
+    name: zyx-zuul
+
+#配置zuul路由
+zuul:
+  routes:
+    service-provider: /provider/**  #路由名称,可以随便取,习惯是服务名
+    service-customer: /customer/**
+  prefix: /api       #路由前缀,判断是否经过Zuul,可配置可不配置
+#      path: /service-provider/**     #多级目录
+#      url: http://localhost:8081     #路由url
+#      serviceId: service-provider     #实现负载均衡,避免硬编码
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+#配置负载均衡超时等待时间
+ribbon:
+  ReadTimeout: 120000  #请求处理的超时时间
+  ConnectTimeout: 30000  #请求连接的超时时间

@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/SpringCloud-Start/service-customer/service-customer.iml" filepath="$PROJECT_DIR$/SpringCloud-Start/service-customer/service-customer.iml" />
       <module fileurl="file://$PROJECT_DIR$/SpringCloud-Start/service-eureka/service-eureka.iml" filepath="$PROJECT_DIR$/SpringCloud-Start/service-eureka/service-eureka.iml" />
       <module fileurl="file://$PROJECT_DIR$/SpringCloud-Start/service-provider/service-provider.iml" filepath="$PROJECT_DIR$/SpringCloud-Start/service-provider/service-provider.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SpringCloud-Start/zyx-zuul/zyx-zuul.iml" filepath="$PROJECT_DIR$/SpringCloud-Start/zyx-zuul/zyx-zuul.iml" />
     </modules>
   </component>
 </project>

@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: service-customer
+  cloud:
+    loadbalancer:         #负载均衡重试机制
+      retry:
+        enabled: true # 开启Spring Cloud的重试功能
 eureka:
   client:
     service-url:
@@ -11,4 +15,31 @@ eureka:
     fetch-registry: true                  #拉取Eureka Server服务的列表备份,然后缓存在本地(默认true)
     registry-fetch-interval-seconds: 5    #间隔多久读取并更新数据
 
+#修改负载均衡规则的配置入口：
+service-provider:       #服务提供方的服务ID,不同的服务,不同的负载均衡算法
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule   #负载均衡算法所在的包
+    ConnectTimeout: 250 # Ribbon的连接超时时间
+    ReadTimeout: 1000 # Ribbon的数据读取超时时间
+    OkToRetryOnAllOperations: true # 是否对所有操作都进行重试
+    MaxAutoRetriesNextServer: 1 # 切换实例的重试次数
+    MaxAutoRetries: 1 # 对当前实例的重试次数
 
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 6000    #设置Hystrix的超时时间 6000ms
+feign:
+  hystrix:
+    enabled: true  # 开启Feign的Hystrix熔断功能
+  compression:
+    request:
+      enabled: true # 开启请求压缩
+      mime-types: text/html,application/xml,application/json # 设置压缩的数据类型
+      min-request-size: 2048 # 设置触发压缩的大小下限
+    response:
+      enabled: true # 开启响应压缩
+#  注：上面的数据类型、压缩大小下限均为默认值。
