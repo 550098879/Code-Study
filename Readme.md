@@ -168,7 +168,7 @@
             - 问题处理:不直接访问服务,而是通过线程池中空闲的线程来访问服务,线程池已满或者请求超时会进行降级处理(服务降级)
             - 服务降级:优先保证核心服务,而非核心服务不可用或弱可用,不会导致阻塞最多只是该服务对其他服务无响应
         - 服务熔断: 达到熔断阈值全部降级5s,5秒后尝试向微服务发送请求,正常后打开,反复尝试
-    - 服务降级的使用:
+    - 服务降级的使用:检查每次请求
         - 添加依赖:spring-cloud-starter-netflix-hystrix
         - 熔断时间,默认1s,配置yml覆盖默认时间
         - 引导类添加注解:@EnableCircuitBreaker--开启熔断器   (@EnableHystrix:所有方法默认开启熔断机制)
@@ -180,7 +180,7 @@
         - 方法级熔断:
             - 方法添加注解: @HystrixCommand(fallbackMethod = "queryUserByIdFallback"),声明被熔断的方法,不指定使用全局默认
             - 创建应急方法 queryUserByIdFallback,参数列表和返回值需要一致
-    - 服务熔断的使用:  熔断器,也叫断路器:Circuit Breaker
+    - 服务熔断的使用: 不再发送请求  熔断器,也叫断路器:Circuit Breaker
         - Closed:关闭状态,所有请求都能正常访问.
         - Open:打开状态,所有请求都会被降级,Hystrix会对请求情况计数,当一定时间内失败请求百分比达到阈值,在触发熔断,
                断路器会完全打开,默认失败比例的阈值是50%,请求次数最少不低于20次(出现异常的请求)
@@ -277,7 +277,7 @@
         - 负载分配: 
         - 静态响应处理:
         - 多区域弹性:
-     - 使用:
+     - 动态路由使用:(自带负载均衡)
         - 创建工程,引入Zuul启动器
         - 启动类添加@EnableZuulProxy 注解,启用Zuul网关组件
             - 第一种配置方式:
@@ -322,9 +322,55 @@
                     ReadTimeout: 120000  #请求处理的超时时间
                     ConnectTimeout: 30000  #请求连接的超时时间
             ```
-          
-               
+     - Zuul过滤器:实现身份认证与安全
+        - Zuul作为网关的其中一个重要功能，就是实现请求的鉴权。而这个动作我们往往是通过Zuul提供的过滤器来实现的。
+        - 使用场景:
+            - 请求鉴权：一般放在pre类型，如果发现没有访问权限，直接就拦截了
+            - 异常处理：一般会在error类型和post类型过滤器中结合来处理。
+            - 服务调用时长统计：pre和post结合使用。
+        - 顶级ZuulFilter父类
+            - shouldFilter：返回一个Boolean值，判断该过滤器是否需要执行。返回true执行，返回false不执行。
+            - run：过滤器的具体业务逻辑。
+            - filterType：返回字符串，代表过滤器的类型。包含以下4种：
+              - pre：请求在被路由之前执行
+              - routing：在路由请求时调用
+              - post：在routing和error过滤器之后调用
+              - error：处理请求时发生错误调用
+            - filterOrder：通过返回的int值来定义过滤器的执行顺序，数字越小优先级越高。
 
+        - 过滤器执行生命周期：
+            - 正常流程：
+              - 请求到达首先会经过pre类型过滤器，而后到达routing类型，进行路由，请求就到达真正的服务提供者，执行请求，返回结果后，会到达post过滤器。而后返回响应。
+            - 异常流程：
+              - 整个过程中，pre或者routing过滤器出现异常，都会直接进入error过滤器，再error处理完毕后，会将请求交给POST过滤器，最后返回给用户。
+              - 如果是error过滤器自己出现异常，最终也会进入POST过滤器，而后返回。
+              - 如果是POST过滤器出现异常，会跳转到error过滤器，但是与pre和routing不同的时，请求不会再到达POST过滤器了。
+        - 定义一个过滤器，模拟一个登录的校验。基本逻辑：如果请求中有access-token参数，则认为请求有效，放行。
+            - 编写过滤器类,继承ZuulFilter顶级父类
+            - 实现对应方法,返回对应值.编写run过滤方法
+            - 获取request,response,获取请求参数及响应错误信息(通过Zuul(RequestContext)获取,或者通过@Autowired注入)
+            - 做出错误反馈
+     - Zuul负载均衡和熔断
+        - Zuul中默认就已经集成了Ribbon负载均衡和Hystix熔断机制。但是所有的超时策略都是走的默认值，比如熔断超时时间只有1S，
+            很容易就触发了。因此建议我们手动进行配置：  
+        ```yaml
+           zuul:
+             retryable: true   # 开启重试
+           ribbon:
+             ConnectTimeout: 250 # 连接超时时间(ms)
+             ReadTimeout: 2000 # 通信超时时间(ms)
+             OkToRetryOnAllOperations: true # 是否对所有操作重试
+             MaxAutoRetriesNextServer: 2 # 同一服务不同实例的重试次数
+             MaxAutoRetries: 1 # 同一实例的重试次数
+           hystrix:
+             command:
+             	default:
+                   execution:
+                     isolation:
+                       thread:
+                         timeoutInMillisecond: 6000 # 熔断超时时长：6000ms
+        ```
+     
 - 玩法
     - 引入组件的启动器
     - 覆盖默认配置
@@ -358,3 +404,7 @@
         	ReadTimeout: 120000  #请求处理的超时时间  
         	ConnectTimeout: 30000  #请求连接的超时时间
         ```
+      
+      
+      
+      
