@@ -29,7 +29,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         /**1.注册自定义的拦截器
          * 2.配置拦截路径:    /* 拦截一级路径
-         *                   /* 拦截二级路径
+         *                   /** 拦截所有路径
          * 3.
          */
         registry.addInterceptor(myInterceptor)

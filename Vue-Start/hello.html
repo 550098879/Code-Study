@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+
+        .active{
+            display: inline-block;
+        }
+        .hidd{
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+<!--vue对象定义Html模板-->
+<div id="app">
+    <!--花括号:js表达式-->
+    <h1 v-on:click="incr">hello {{msg}},{{num}}</h1>
+    <!--数据双向绑定:v-model-->
+    <input type="text" v-model="num">
+    <!--事件绑定:v-on:事件名="js表达式/方法名" 不传递参数可省略()-->
+    <input type="button" value="点击-" v-on:click="num--">
+    <!--右击事件,传递该事件,在方法中解除默认的右击事件-->
+    <!--    <input type="button" value="点击+" @contextmenu="incr($event)">-->
+    <input type="button" value="点击+" @contextmenu.prevent="incr">
+    <hr>
+    <input type="checkbox" value="ios" v-model="language">ios<br>
+    <input type="checkbox" value="java" v-model="language">java<br>
+    <input type="checkbox" value="php" v-model="language">php<br>
+    <div>你选择了{{language.join(",")}}</div>
+    <input type="text" value="回车" @keyup.13="submit">
+    <ul>
+        <li v-for="(user,index) in users" v-text="(index+1)+'.'+user.name+'--'+user.age+'--'+user.gender"
+            :key="index"></li>
+    </ul>
+    <hr>
+    <ul>
+        <li v-for="(val,key,index) in user" v-text="index+1+'.'+key+':'+val"
+            :key="index"></li>
+    </ul>
+
+    <div>
+        <span v-if="show">v-if:不渲染</span><br>
+        <span v-show="show">v-show:隐藏不显示</span>
+    </div>
+
+    <div>
+        <input type="button" value="生成随机数" @click="rand = Math.random()"><br>
+        <!--v-if和v-else-if需要金穗使用,中间不能添加任何元素-->
+        <div v-if="rand > 0.5">大于0.5</div>
+        <div v-else-if="rand < 0.5">小于0.5</div>
+
+        <span>random:{{rand}}</span>
+
+        <div v-bind:class="{active : num < 0}">库存不足</div>
+
+    </div>
+
+
+
+</div>
+
+
+</body>
+
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    /*初始化一个vue实例,作用域为容器内*/
+    let app = new Vue({
+        el: '#app',          //element:选择器
+        data: {              //定义数据模型
+            name: '张三',
+            msg: 'Vue',
+            num: 0,
+            language: [],
+            users: [
+                {name: '柳岩', gender: '女', age: 21},
+                {name: '峰哥', gender: '男', age: 18},
+                {name: '范冰冰', gender: '女', age: 24},
+                {name: '刘亦菲', gender: '女', age: 18},
+                {name: '古力娜扎', gender: '女', age: 25}
+            ],
+            user: {name: '柳岩', gender: '女', age: 21},
+            show: true,
+            rand: 0,
+        },
+        /*数据监控*/
+        watch:{
+            num(newVal,oldVal){
+                //执行ajax请求获取真实数据
+                console.log(newVal,oldVal);
+            },
+
+        },
+        methods: {
+            incr(ev) {    //箭头函数,可以获取到this
+                // ev.preventDefault();//禁止默认事件
+                this.num++;
+            }, submit() {
+                alert('回车提交');
+            }
+
+
+        },
+        //钩子函数(基于生命周期的事件函数)
+        created() {   //vue实例化之后执行,发送ajax获取数据
+
+            //1.发送ajax请求
+
+            //2.给数据模型赋值
+            // this.data.msg = 'VUE';无法修改值
+            this.msg = 'VUE';
+        }
+
+
+    });
+
+
+</script>
+
+</html>

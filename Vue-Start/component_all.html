@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>全局组件使用</title>
+</head>
+<body>
+
+    <div id="app">
+        <!--添加: (动态传递)表示传递的属性为js代码(数据模型),而不是字符串-->
+            <!--自定义事件-->
+        <counter :parent_num="num" @parent_method="updateNum()"></counter>
+        <!--不加 : 静态传递-->
+        <counter parent_num="0"></counter>
+<!--        <counter></counter>-->
+
+    </div>
+
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script>
+
+        /**
+         * 1.定义vue全局组件(子组件):所有vue实例都可以调用
+         * 2.编辑组件实例对象
+         * 3.编辑模板(通用性)
+         * 4.data(){}作为方法返回数据模型
+         * 5.定义父组件
+         * 6.顺序很重要,先注册子组件,在创建父组件
+         * @type {Vue}
+         */
+        Vue.component("counter",{
+            //组件实例对象
+            //1.组件模板,使用父组件属性,直接使用属性名
+            template:"<button @click='child_updateNum'>点击+1,num:{{parent_num}}</button>",
+            //2.数据模型:不同于vue实例,data是方法,返回值才是数据模型,必须要有返回值
+            data(){
+                return {
+                    num: 0,
+                }
+            },
+            //3.子组件接受父组件传递的属性,自定义属性名,与调用时使用的一致
+            //3.1.数组接收属性
+            //  props:["parent_num"],
+            //3.2.验证属性:无实际约束力,只有控制台会报异常
+            props:{
+                parent_num:{
+                    type: Number,
+                    default: 0,
+                    required: true      //是否唯一
+                },
+
+            },
+
+            //接收父组件传递的方法
+            methods:{
+                child_updateNum(){
+                    this.$emit("parent_method");//调用父组件自定义事件名,同步事件
+                }
+            }
+
+        });
+
+
+        //创建VUE实例(父组件)
+        const app = new Vue({
+            el:"#app",  //选择器
+            data:{
+                //实验父组件传递属性到子组件
+                num: 0,
+            },    //数据模型
+            methods:{
+                //修改数据模型,传递方法到子组件中
+                updateNum(){
+                    this.num++;
+                },
+            }, //方法
+            watch:{},   //数据模型监控
+            // created:{}  //vue实例初始化触发钩子函数
+        });
+
+
+
+
+
+    </script>
+
+</body>
+</html>

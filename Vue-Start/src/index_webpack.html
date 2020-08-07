@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>webpack主页</title>
+
+</head>
+<body>
+<div id="app">
+    <!--router-link来指定跳转的路径-->
+    <span><router-link to="/login">登录</router-link></span> |
+    <span><router-link to="/reg">注册</router-link></span>
+    <hr>
+    <div>
+        <!--vue-router的锚点-->
+        <router-view></router-view>
+    </div>
+</div>
+<!--vue的js需要在app容器之后引入-->
+<!--<script src="../dist/build.js"></script>-->
+</body>
+
+
+
+</html>

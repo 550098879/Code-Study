@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+    <!--    <script src="/Code-Study/Vue-Start/node_modules/vue/dist/vue.js"></script>-->
+
+</head>
+<body>
+<div id="app">
+    <span><router-link to="/login">登录</router-link></span> |
+    <span><router-link to="/reg">注册</router-link></span>
+    <hr>
+    <div>
+        <!--vue-router的锚点-->
+        <router-view></router-view>
+    </div>
+    <!--<loginForm></loginForm>-->
+    <!--
+        疑问：为什么不采用上面的写法？
+        由于html是大小写不敏感的，如果采用上面的写法，则被认为是<loginform></loginform>
+        所以，如果是驼峰形式的组件，需要把驼峰转化为“-”的形式
+     -->
+    <!--    <login-form></login-form>-->
+    <!--    <reg-form></reg-form>-->
+</div>
+
+</body>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script src="../node_modules/vue-router/dist/vue-router.js"></script>
+<script src="js/login.js"></script>
+<script src="js/reg.js"></script>
+<script>
+    /**路由实现
+     * 1.创建父组件:index.html
+     * 2.编写子组件js:login.js/reg.js
+     * 3.父组件调用子组件
+     *   3.1.导入对应组件的js
+     *   3.2.父组件中使用components使用组件:(组件名和key相同可以省略)
+     * 4.使用路由,实现切换
+     *   4.1.安装:npm install vue-router --save
+     *   4.2.导入vue-router.js
+     *   4.3.创建路由实例
+     *   4.4.添加路由
+     * 5.使用组件添加链接:<router-link >
+     * 6.添加锚点:<router-view> 与 <router-link>对应
+     * 7.父组件引入router(自己定义的路由实例)
+     *   7.1.父组件引入的组件可以省略,router会加载组件
+     */
+
+        //创建路由实例
+    const router = new VueRouter({
+            routes: [
+                {
+                    path: "/login",          //路由路径,必须以"/"开头
+                    component: loginForm,    //路由组件
+                },
+                {
+                    path: "/reg",          //路由路径
+                    component: regForm,
+                },
+            ],
+        });
+
+
+    const app = new Vue({
+        el: "#app",
+        // components: {
+        //     loginForm: loginForm,
+        //     regForm,
+        // },
+        router
+    });
+
+
+</script>
+
+</html>

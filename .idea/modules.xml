@@ -3,8 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Code-Study.iml" filepath="$PROJECT_DIR$/.idea/Code-Study.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ES6-Start/ES6-Start.iml" filepath="$PROJECT_DIR$/ES6-Start/ES6-Start.iml" />
       <module fileurl="file://$PROJECT_DIR$/SpringBoot_Start/SpringBoot_Start.iml" filepath="$PROJECT_DIR$/SpringBoot_Start/SpringBoot_Start.iml" />
       <module fileurl="file://$PROJECT_DIR$/SpringCloud-Start/SpringCloud-Start.iml" filepath="$PROJECT_DIR$/SpringCloud-Start/SpringCloud-Start.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Vue-Start/Vue-Start.iml" filepath="$PROJECT_DIR$/Vue-Start/Vue-Start.iml" />
       <module fileurl="file://$PROJECT_DIR$/SpringCloud-Start/service-customer/service-customer.iml" filepath="$PROJECT_DIR$/SpringCloud-Start/service-customer/service-customer.iml" />
       <module fileurl="file://$PROJECT_DIR$/SpringCloud-Start/service-eureka/service-eureka.iml" filepath="$PROJECT_DIR$/SpringCloud-Start/service-eureka/service-eureka.iml" />
       <module fileurl="file://$PROJECT_DIR$/SpringCloud-Start/service-provider/service-provider.iml" filepath="$PROJECT_DIR$/SpringCloud-Start/service-provider/service-provider.iml" />
